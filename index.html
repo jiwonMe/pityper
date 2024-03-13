@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pi Typing Game</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .digit-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        height: 100px;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      .digit {
+        transition: transform 0.3s ease;
+      }
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+      }
+      .keypad button {
+        padding: 1rem;
+        font-size: 1.5rem;
+        background-color: #f3f4f6;
+        border: 2px solid #d1d5db;
+        border-radius: 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-gray-800">
+    <div class="min-h-screen flex flex-col items-center justify-center">
+      <h1 class="text-3xl font-bold mb-4">Pi Typing Game</h1>
+      <p class="text-lg mb-8">How Fast & Long Can You type & remember PI</p>
+      <div class="mb-4">
+        <span id="timer" class="text-lg font-mono">00:02</span>
+        <span class="text-sm">timer</span>
+      </div>
+      <div class="digit-container bg-gray-100 mb-8 w-64 rounded-lg">
+        <div id="digits" class="digit font-mono relative">3.</div>
+      </div>
+      <div class="keypad">
+        <button onclick="typeDigit('1')">1</button>
+        <button onclick="typeDigit('2')">2</button>
+        <button onclick="typeDigit('3')">3</button>
+        <button onclick="typeDigit('4')">4</button>
+        <button onclick="typeDigit('5')">5</button>
+        <button onclick="typeDigit('6')">6</button>
+        <button onclick="typeDigit('7')">7</button>
+        <button onclick="typeDigit('8')">8</button>
+        <button onclick="typeDigit('9')">9</button>
+        <button onclick="typeDigit('0')">0</button>
+      </div>
+    </div>
+    <script>
+      const digitsElement = document.getElementById("digits");
+      const piDigits =
+        "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+      let currentDigits = "3.";
+
+      function typeDigit(digit) {
+        const nextDigit = piDigits[currentDigits.length];
+        if (digit === nextDigit) {
+          currentDigits += digit;
+          updateDigitsDisplay();
+        } else {
+          // Handle incorrect input
+          alert("Incorrect! Try again.");
+        }
+      }
+
+      function updateDigitsDisplay() {
+        digitsElement.textContent = currentDigits;
+        digitsElement.style.transform = `translateX(-50%)`;
+      }
+
+      // Keyboard interaction
+      document.addEventListener("keydown", (event) => {
+        if (event.key >= "0" && event.key <= "9") {
+          typeDigit(event.key);
+        }
+      });
+
+      // Timer functionality (placeholder)
+      let timeRemaining = 60; // in seconds
+      const timerElement = document.getElementById("timer");
+      const timerInterval = setInterval(() => {
+        if (timeRemaining > 0) {
+          timeRemaining--;
+          timerElement.textContent = `${timeRemaining}`;
+        } else {
+          clearInterval(timerInterval);
+          // Handle end of game
+          alert("Time's up! Your score: " + (currentDigits.length - 2));
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>
